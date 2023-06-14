@@ -14,6 +14,10 @@ class SinglyLinkedList {
         T pop();
         void unshift(const T &elem);
         T shift();
+        T getAt(std::size_t pos);
+        void setAt(std::size_t pos, const T &elem);
+        // void insert(std::size_t pos, const T &elem);
+        // T removeAt(std::size_t pos);
         void print() const;
         ~SinglyLinkedList() = default;
 };

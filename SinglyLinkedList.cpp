@@ -92,6 +92,18 @@ void SinglyLinkedList<T>::print() const {
     std::cout << "]\n";
 }
 
+template<class T>
+T SinglyLinkedList<T>::getAt(std::size_t pos) {
+    if(pos < 0 || pos >= size)
+        throw std::out_of_range("You cannot get an element outside the boundaries of the list.");
+    std::weak_ptr<Node<T>> curNode = head;
+    std::size_t index = 0;
+    while(index < pos) {
+        curNode = curNode.lock()->next;
+        ++index;
+    }
+    return curNode.lock()->data;
+}
 // #include "SinglyLinkedList.h"
 
 // template<class T>

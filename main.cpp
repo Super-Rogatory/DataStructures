@@ -13,6 +13,14 @@ int main() {
     list1.push(30);
     list1.print();  // Expected output: [ 10 20 30 ]
 
+    std::cout << list1.getAt(0) << std::endl;
+    std::cout << list1.getAt(1) << std::endl;
+    std::cout << list1.getAt(2) << std::endl;
+    try {
+        list1.getAt(3);
+    } catch(const std::out_of_range &e) {
+        std::cout << "Exception caught: " << e.what() << std::endl;
+    }
     // Test pop method
     int poppedElement = list1.pop();
     std::cout << "Popped element: " << poppedElement << std::endl;  // Expected output: 30
@@ -38,7 +46,7 @@ int main() {
     list1.print();  // Expected output: [ 10 ]
 
     poppedElement = list1.pop();
-    
+
     // Test pop from an empty list
     try {
         poppedElement = list1.pop();
