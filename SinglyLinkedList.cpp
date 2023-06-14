@@ -93,7 +93,7 @@ void SinglyLinkedList<T>::print() const {
 }
 
 template<class T>
-T SinglyLinkedList<T>::getAt(std::size_t pos) {
+std::shared_ptr<Node<T>> SinglyLinkedList<T>::getAt(const std::size_t pos) const {
     if(pos < 0 || pos >= size)
         throw std::out_of_range("You cannot get an element outside the boundaries of the list.");
     std::weak_ptr<Node<T>> curNode = head;
@@ -102,8 +102,41 @@ T SinglyLinkedList<T>::getAt(std::size_t pos) {
         curNode = curNode.lock()->next;
         ++index;
     }
-    return curNode.lock()->data;
+    return curNode.lock();
 }
+
+template<class T>
+bool SinglyLinkedList<T>::setAt(const std::size_t pos, const T &elem) {
+    try {
+        auto ptr = this->getAt(pos);
+        ptr->data = elem;
+    } catch(const std::out_of_range &e) {
+        std::cout << "Exception Caught: " << e.what() << std::endl;
+        return false;
+    }
+    return true;
+}
+
+template<class T>
+bool SinglyLinkedList<T>::insertAt(const std::size_t pos, const T& elem) {
+    if(pos < 0 || pos > size) {
+        throw std::out_of_range("You cannot insert an element outside the boundaries of the list!");
+        return false;
+    }
+    if(pos == 0) 
+        this->unshift(elem);
+    else if(pos == size)
+        this->push(elem);
+    else {
+        std::size_t index = 0;
+        std::shared_ptr<Node<T>> curNode = std::make_shared<Node<T>>(elem);
+        auto prevNode = this->getAt(pos - 1);
+        curNode->next = prevNode->next;
+        prevNode->next = curNode;
+    }
+    return true;
+}
+
 // #include "SinglyLinkedList.h"
 
 // template<class T>

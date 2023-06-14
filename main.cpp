@@ -21,6 +21,11 @@ int main() {
     } catch(const std::out_of_range &e) {
         std::cout << "Exception caught: " << e.what() << std::endl;
     }
+    if(list1.setAt(0, 1000))
+        std::cout << "Successfully changed 10 to 1000, the first element at index 0" << std::endl; 
+    
+    list1.print();
+    list1.setAt(0, 10);
     // Test pop method
     int poppedElement = list1.pop();
     std::cout << "Popped element: " << poppedElement << std::endl;  // Expected output: 30
