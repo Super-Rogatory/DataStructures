@@ -93,7 +93,7 @@ void SinglyLinkedList<T>::print() const {
 }
 
 template<class T>
-std::shared_ptr<Node<T>> SinglyLinkedList<T>::getAt(const std::size_t pos) const {
+Node<T>& SinglyLinkedList<T>::getAt(const std::size_t pos) const {
     if(pos < 0 || pos >= size)
         throw std::out_of_range("You cannot get an element outside the boundaries of the list.");
     std::weak_ptr<Node<T>> curNode = head;
@@ -102,14 +102,14 @@ std::shared_ptr<Node<T>> SinglyLinkedList<T>::getAt(const std::size_t pos) const
         curNode = curNode.lock()->next;
         ++index;
     }
-    return curNode.lock();
+    return *curNode.lock();
 }
 
 template<class T>
 bool SinglyLinkedList<T>::setAt(const std::size_t pos, const T &elem) {
     try {
-        auto ptr = this->getAt(pos);
-        ptr->data = elem;
+        Node<T> &obj = this->getAt(pos);
+        obj.data = elem;
     } catch(const std::out_of_range &e) {
         std::cout << "Exception Caught: " << e.what() << std::endl;
         return false;
@@ -130,13 +130,34 @@ bool SinglyLinkedList<T>::insertAt(const std::size_t pos, const T& elem) {
     else {
         std::size_t index = 0;
         std::shared_ptr<Node<T>> curNode = std::make_shared<Node<T>>(elem);
-        auto prevNode = this->getAt(pos - 1);
-        curNode->next = prevNode->next;
-        prevNode->next = curNode;
+        Node<T> &prevNode = this->getAt(pos - 1);
+        curNode->next = prevNode.next;
+        prevNode.next = curNode;
     }
     return true;
 }
 
+template<class T>
+T SinglyLinkedList<T>::removeAt(const std::size_t pos) {
+    if(pos < 0 || pos >= size) 
+        throw std::out_of_range("You cannot remove an element outside the boundaries of the list!");
+    if(pos == 0)
+        return this->shift();
+    else if(pos == size - 1)
+        return this->pop();
+    else {
+        Node<T> &prevNode = this->getAt(pos - 1);
+        auto removedNode = prevNode.next;
+        prevNode.next = removedNode->next;
+        --size;
+        return removedNode->data;
+    }
+}
+
+template<class T>
+std::size_t SinglyLinkedList<T>::getSize() const {
+    return this->size;
+}
 // #include "SinglyLinkedList.h"
 
 // template<class T>

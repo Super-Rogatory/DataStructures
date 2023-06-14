@@ -15,6 +15,7 @@ class Node {
     public:
         Node();
         explicit Node(T data);
+        T getVal() const;
         static int test();
         ~Node() = default;
 };

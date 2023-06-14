@@ -9,3 +9,8 @@ Node<T>::Node()
 template<class T>
 Node<T>::Node(T d)
     :data(d), next(nullptr) {}
+
+template<class T>
+T Node<T>::getVal() const {
+    return this->data;
+}

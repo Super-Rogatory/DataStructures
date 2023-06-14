@@ -3,81 +3,111 @@
 #include <string>
 // Unlike with non template classes, all the compiler needs to know is that some particular class exists, and implementation details can be FOUND afterward.
 // With template classes, implementation details needs to be KNOWN BEFORE object instantiation.
+
 int main() {
-    // Create a LinkedList of integers
-    SinglyLinkedList<int> list1;
+    SinglyLinkedList<int> list;
 
-    // Test push and print methods
-    list1.push(10);
-    list1.push(20);
-    list1.push(30);
-    list1.print();  // Expected output: [ 10 20 30 ]
+    // Test case 1: Pushing elements to the list
+    list.push(5);
+    list.push(10);
+    list.push(15);
+    list.push(20);
+    list.push(25);
+    list.print();
+    // The list should contain: [5, 10, 15, 20, 25]
 
-    std::cout << list1.getAt(0) << std::endl;
-    std::cout << list1.getAt(1) << std::endl;
-    std::cout << list1.getAt(2) << std::endl;
+    // Test case 2: Popping from a non-empty list
+    int poppedElement = list.pop();
+    list.print();
+    // poppedElement should be 25
+    // The list should contain: [5, 10, 15, 20]
+
+    // Test case 3: Shifting from a non-empty list
+    int shiftedElement = list.shift();
+    list.print();
+    // shiftedElement should be 5
+    // The list should contain: [10, 15, 20]
+
+    // Test case 4: Unshifting elements to the list
+    list.unshift(30);
+    list.unshift(35);
+    list.unshift(40);
+    list.print();
+    // The list should contain: [40, 35, 30, 10, 15, 20]
+
+    // Test case 5: Popping from a non-empty list again
+    poppedElement = list.pop();
+    list.print();
+    // poppedElement should be 20
+    // The list should contain: [40, 35, 30, 10, 15]
+
+    // Test case 6: Shifting from a non-empty list again
+    shiftedElement = list.shift();
+    // shiftedElement should be 40
+    // The list should contain: [35, 30, 10, 15]
+
+    // Test case 7: Printing the list
+    list.print();
+    // The output should be: [35 30 10 15]
+
+    // Test case 8: Getting an element within the list boundaries
+    Node<int>& node = list.getAt(2);
+    int element = node.getVal();
+    std::cout << element << std::endl;
+    // element should be 10
+
+    // Test case 9: Getting an element outside the list boundaries
     try {
-        list1.getAt(3);
-    } catch(const std::out_of_range &e) {
-        std::cout << "Exception caught: " << e.what() << std::endl;
-    }
-    if(list1.setAt(0, 1000))
-        std::cout << "Successfully changed 10 to 1000, the first element at index 0" << std::endl; 
-    
-    list1.print();
-    list1.setAt(0, 10);
-    // Test pop method
-    int poppedElement = list1.pop();
-    std::cout << "Popped element: " << poppedElement << std::endl;  // Expected output: 30
-    list1.print();  // Expected output: [ 10 20 ]
-
-    // Test unshift and shift methods
-    list1.unshift(5);
-    list1.unshift(2);
-    list1.print();  // Expected output: [ 2 5 10 20 ]
-
-    int shiftedElement = list1.shift();
-    std::cout << "Shifted element: " << shiftedElement << std::endl;  // Expected output: 2
-    list1.print();  // Expected output: [ 5 10 20 ]
-
-    // Test pop from a list with one element
-    poppedElement = list1.pop();
-    std::cout << "Popped element: " << poppedElement << std::endl;  // Expected output: 20
-    list1.print();  // Expected output: [ 5 10 ]
-
-    // Test shift from a list with one element
-    shiftedElement = list1.shift();
-    std::cout << "Shifted element: " << shiftedElement << std::endl;  // Expected output: 5
-    list1.print();  // Expected output: [ 10 ]
-
-    poppedElement = list1.pop();
-
-    // Test pop from an empty list
-    try {
-        poppedElement = list1.pop();
-        std::cout << "Popped element: " << poppedElement << std::endl;
+        Node<int>& invalidNode = list.getAt(10);
+        // The above line should throw an exception
     } catch (const std::out_of_range& e) {
-        std::cout << "Exception caught: " << e.what() << std::endl;  // Expected output: Cannot pop from an empty linked list
+        // Expected exception caught
     }
 
-    // Test shift from an empty list
-    try {
-        shiftedElement = list1.shift();
-        std::cout << "Shifted element: " << shiftedElement << std::endl;
-    } catch (const std::out_of_range& e) {
-        std::cout << "Exception caught: " << e.what() << std::endl;  // Expected output: You cannot remove elements from an empty list.
-    }
+    // Test case 10: Setting an element at a valid position
+    bool success = list.setAt(1, 100);
+    list.print();
+    // success should be true
+    // The list should contain: [35, 100, 10, 15]
 
-    // Test empty list
-    SinglyLinkedList<std::string> list2;
-    list2.print();  // Expected output: [ ]
+    // Test case 11: Setting an element at an invalid position
+    bool failure = list.setAt(10, 200);
+    list.print();
+    // failure should be false
 
-    // Test push and print methods with strings
-    list2.push("Hello");
-    list2.push("World");
-    list2.push("!");
-    list2.print();  // Expected output: [ Hello World ! ]
+    // Test case 12: Inserting an element at a valid position
+    bool insertionSuccess = list.insertAt(2, 50);
+    list.print();
+    // insertionSuccess should be true
+    // The list should contain: [35, 100, 50, 10, 15]
 
+    // Test case 13: Inserting an element at the beginning
+    list.insertAt(0, 5);
+    list.print();
+    // The list should contain: [5, 35, 100, 50, 10, 15]
+
+    // Test case 14: Inserting an element at the end
+    list.insertAt(list.getSize(), 25);
+    list.print();
+    // The list should contain: [5, 35, 100, 50, 10, 15, 25]
+
+    // Test case 15: Removing an element at a valid position
+    int removedElement = list.removeAt(3);
+    list.print();
+    // removedElement should be 50
+    // The list should contain: [5, 35, 100, 10, 15, 25]
+
+    // Test case 16: Removing an element at the beginning
+    removedElement = list.removeAt(0);
+    list.print();
+    // removedElement should be 5
+    // The list should contain: [35, 100, 10, 15, 25]
+
+    // Test case 17: Removing an element at the end
+    removedElement = list.removeAt(list.getSize() - 1);
+    list.print();
+    // removedElement should be 25
+    // The list should contain: [35, 100, 10, 15]
     return 0;
 }
 

@@ -14,11 +14,12 @@ class SinglyLinkedList {
         T pop();
         void unshift(const T &elem);
         T shift();
-        std::shared_ptr<Node<T>> getAt(const std::size_t pos) const;
+        Node<T>& getAt(const std::size_t pos) const;
         bool setAt(const std::size_t pos, const T &elem);
         bool insertAt(std::size_t pos, const T &elem);
-        // T removeAt(std::size_t pos);
+        T removeAt(std::size_t pos);
         void print() const;
+        std::size_t getSize() const;
         ~SinglyLinkedList() = default;
 };
 #endif
